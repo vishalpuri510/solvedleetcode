@@ -1,0 +1,29 @@
+Question-Given an integer array nums of unique elements, return all possible subsets (the power set).
+
+The solution set must not contain duplicate subsets. Return the solution in any order.
+
+solution(BACKTRACKING)-
+
+class Solution {
+    public List<List<Integer>> subsets(int[] nums) {
+     
+        List<List<Integer>> al = new ArrayList<>();
+    
+        
+        getans(al,0,new ArrayList<>(),nums);
+        
+        return al;
+    }
+    
+    public void getans(List<List<Integer>> al , int i , List<Integer> list, int[] nums){
+        
+        if(i == nums.length){
+            al.add(list);
+            return;
+        }
+        
+        getans(al,i+1,new ArrayList<>(list),nums);
+        list.add(nums[i]);
+        getans(al,i+1,new ArrayList<>(list),nums);
+    }
+}
