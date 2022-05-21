@@ -1,0 +1,92 @@
+Question-
+
+The n-queens puzzle is the problem of placing n queens on an n x n chessboard such that no two queens attack each other.
+
+Given an integer n, return all distinct solutions to the n-queens puzzle. You may return the answer in any order.
+
+Each solution contains a distinct board configuration of the n-queens' placement, where 'Q' and '.' both indicate a queen and an empty space, respectively.
+
+ 
+
+Example 1:
+
+
+Input: n = 4
+Output: [[".Q..","...Q","Q...","..Q."],["..Q.","Q...","...Q",".Q.."]]
+Explanation: There exist two distinct solutions to the 4-queens puzzle as shown above
+Example 2:
+
+Input: n = 1
+Output: [["Q"]]
+
+Solution-
+
+class Solution {
+    public List<List<String>> solveNQueens(int n) {
+        List<List<String>> res = new ArrayList<>();
+        char[][] board = new char[n][n];
+    
+        for (int i=0; i<n; i++) //board = Default to dots
+            for(int j=0; j<n; j++)
+                board[i][j] = '.';
+    
+        solve(0 , board , res);
+    
+        return res;
+    }
+    
+    public void solve(int col , char[][] board , List<List<String>> res){
+    
+    if(col == board.length){ //If col reach board.length means all queens are successfullt got places
+        res.add(construct(board)); //Add to main result
+        return;
+    }
+    
+    for (int row=0; row<board.length; row++){
+        if(isSafe(board , row , col)){ //Is safe to put queen at given possition ?
+            board[row][col] = 'Q'; //then put
+            solve(col + 1, board , res); //Go for other coloum
+            board[row][col] = '.'; //Make again default (BackTracking) 
+        }
+    }
+}
+    
+    public boolean isSafe(char[][] board , int row, int col){
+    //We will check in 3 ways 
+    //1. Same Row (no need to check same column because it's already empty we are there to put)
+    //2. Left Top Diagnoal (No need to check Down because we are moving from Left--> Right)
+    //3. Left Bottom Diagonal
+    
+    for(int i = 0; i<col + 1; i++) //1. Same Row
+        if(board[row][i] == 'Q')
+            return false;
+    
+    int r = row, c = col;
+    while(r>=0 && c>=0){ //2. Left Top Diagnoal
+        if (board[r][c] == 'Q')
+            return false;
+        r--;
+        c--;
+    }
+    
+    r = row; c = col;
+    while(r < board.length && c>=0){ //3. Left Bottom Diagonal
+        if(board[r][c] == 'Q')
+            return false;
+        r++;
+        c--;
+    }
+    
+    return true; //Means safe to put
+}
+    
+    public List<String> construct(char[][] board){
+        List<String> res = new ArrayList<>();
+        for(int i=0;i<board.length;i++){
+            String str = new String(board[i]);
+            res.add(str);
+        }
+        
+        return res;
+    }
+}
