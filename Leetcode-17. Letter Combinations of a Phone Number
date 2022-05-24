@@ -1,0 +1,118 @@
+Question-
+
+Given a string containing digits from 2-9 inclusive, return all possible letter combinations that the number could represent. Return the answer in any order.
+
+A mapping of digit to letters (just like on the telephone buttons) is given below. Note that 1 does not map to any letters.
+
+Example 1:
+
+Input: digits = "23"
+Output: ["ad","ae","af","bd","be","bf","cd","ce","cf"]
+Example 2:
+
+Input: digits = ""
+Output: []
+Example 3:
+
+Input: digits = "2"
+Output: ["a","b","c"]
+
+Solution-
+
+sol - 1 ---------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+class Solution {
+    public List<String> letterCombinations(String digits) {
+        List<String> al = new ArrayList<>();
+        if(digits.length()==0) return al;
+        else al = letterCombination(digits);
+        
+        return al;
+    }
+    
+    //universal array of string for the defined character comparative to my number
+    static String[] codes={"abc","def","ghi","jkl","mno","pqrs","tuv","wxyz"};
+    
+    public List<String> letterCombination(String str){
+        
+        if(str.length()==0){
+            List<String> base = new ArrayList<>();
+            base.add("");
+            return base;
+        }
+        
+        char ch = str.charAt(0);
+        String ros = str.substring(1);
+        
+        //faith of recursion that rres contains all the other substring
+        List<String> rres = letterCombination(ros);
+        
+        //this is for my result
+        List<String> mres = new ArrayList<>();
+        
+        //getting the code
+        String codeforch = codes[ch - '0'-2];
+        
+        //addiing different codes for the first character to the rest of
+        for(int i=0;i<codeforch.length();i++){
+            char chcode = codeforch.charAt(i);
+            
+            //adding all the substring with our charcter codes;
+            for(String rstr : rres){
+                mres.add(chcode+rstr);
+            }
+        }
+        
+        return mres;
+    }
+}
+
+
+sol - 2 ---------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+class Solution {
+    public List<String> letterCombinations(String digits) {
+        
+        HashMap<Character,String> hm  = new HashMap<>();
+        hm.put('2',"abc");
+        hm.put('3',"def");
+        hm.put('4',"ghi");
+        hm.put('5',"jkl");
+        hm.put('6',"mno");
+        hm.put('7',"pqrs");
+        hm.put('8',"tuv");
+        hm.put('9',"wxyz");
+        
+        List<String> al = new ArrayList<>();
+        if(digits.length()==0) return al;
+        StringBuilder sb = new StringBuilder();
+        helper(hm,al,0,sb,digits);
+        return al;
+    }
+    
+    public void helper(HashMap<Character,String> hm , List<String> al , int idx , StringBuilder sb , String str){
+        //base case when the index is reach at the level of string length
+        if(idx == str.length()){
+            //Adding blank string
+            al.add(new String(sb.toString()));
+            return;
+        }
+        
+        if(idx>str.length()) return;
+        
+        //getting character at index i
+        char ch = str.charAt(idx);
+        String s = hm.get(ch);
+        
+        for(int i=0;i<s.length();i++){
+            char ch2 = s.charAt(i);
+            //add the character to substring
+            sb.append(ch2);
+            helper(hm,al,idx+1,sb,str);
+            //backtrack and remove that
+            sb.deleteCharAt(sb.length()-1);
+        }
+        
+    }
+}
