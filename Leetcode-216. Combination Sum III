@@ -1,0 +1,53 @@
+Question-
+
+Given a collection of candidate numbers (candidates) and a target number (target), find all unique combinations in candidates where the candidate numbers sum to target.
+
+Each number in candidates may only be used once in the combination.
+
+Note: The solution set must not contain duplicate combinations.
+
+ 
+
+Example 1:
+
+Input: candidates = [10,1,2,7,6,1,5], target = 8
+Output: 
+[
+[1,1,6],
+[1,2,5],
+[1,7],
+[2,6]
+]
+Example 2:
+
+Input: candidates = [2,5,2,1,2], target = 5
+Output: 
+[
+[1,2,2],
+[5]
+]
+
+Solution------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+class Solution {
+    public List<List<Integer>> combinationSum3(int k, int n) {
+        List<List<Integer>> al = new ArrayList<>();
+        helper(al,new ArrayList<>(),k,n,1);
+        return al;
+    }
+    
+    public void helper(List<List<Integer>> al,List<Integer> li,int k,int tgt,int idx){
+        if(li.size()==k){
+            if(tgt==0) al.add(new ArrayList<>(li));
+            return;
+        }
+        for(int i=idx;i<=9;i++){
+            if(i <= tgt){
+                li.add(i);
+                helper(al,li,k,tgt-i,i+1);
+                li.remove(li.size()-1);
+            }
+        }
+        
+    }
+}
