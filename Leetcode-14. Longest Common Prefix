@@ -1,0 +1,57 @@
+Question-
+
+Write a function to find the longest common prefix string amongst an array of strings.
+
+If there is no common prefix, return an empty string "".
+
+ 
+
+Example 1:
+
+Input: strs = ["flower","flow","flight"]
+Output: "fl"
+Example 2:
+
+Input: strs = ["dog","racecar","car"]
+Output: ""
+Explanation: There is no common prefix among the input strings.
+
+
+Solution-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+class Solution {
+    public String longestCommonPrefix(String[] strs) {
+        if(strs.length == 1) return strs[0];
+
+        String str1 = strs[0];
+        String str2 = strs[1];
+        String res = "";
+        
+        int i=0;
+        int j=0;
+        while(i<strs[0].length() && j<strs[1].length()){
+            if(str1.charAt(i) != str2.charAt(i)) break;
+            res+=str1.charAt(i);
+            i++;    
+            j++;
+        }
+        
+        if(res.length()==0) return res;
+        
+        for(int x=2;x< strs.length;x++){
+            
+            i=0;
+            j=0;
+            
+            while(i<res.length() && j < strs[x].length()){
+                
+                if(res.charAt(i) != strs[x].charAt(j)) break;
+                i++;
+                j++;
+            }
+            res = res.substring(0,Math.min(i,j));
+        }
+        
+        return res;
+    }
+}
