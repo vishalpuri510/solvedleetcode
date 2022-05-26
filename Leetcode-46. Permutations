@@ -1,0 +1,50 @@
+Question-
+
+Given an array nums of distinct integers, return all the possible permutations. You can return the answer in any order.
+
+ 
+
+Example 1:
+
+Input: nums = [1,2,3]
+Output: [[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]
+Example 2:
+
+Input: nums = [0,1]
+Output: [[0,1],[1,0]]
+Example 3:
+
+Input: nums = [1]
+Output: [[1]]
+
+Solution--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+class Solution {
+    public List<List<Integer>> permute(int[] nums) {
+        int n = nums.length;
+        boolean[] freq = new boolean[n];
+        List<List<Integer>> al = new ArrayList<>();
+
+        helper(nums,n,freq,al,new ArrayList<>());
+        
+        return al;
+    }
+    
+    public void helper(int[] nums,int n,boolean[] freq,List<List<Integer>> al, ArrayList<Integer> li){
+        if(li.size()==n){
+            al.add(new ArrayList<>(li));
+            return;
+        }
+        
+        for(int i=0;i<n;i++){
+            if(!freq[i]){
+                li.add(nums[i]);
+                freq[i] = true;
+                helper(nums,n,freq,al,li);
+                freq[i] = false;
+                li.remove(li.size()-1);
+                
+            }
+        }
+    }
+}
