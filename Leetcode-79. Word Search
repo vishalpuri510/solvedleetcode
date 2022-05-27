@@ -1,0 +1,79 @@
+Question-
+
+Given an m x n grid of characters board and a string word, return true if word exists in the grid.
+
+The word can be constructed from letters of sequentially adjacent cells, where adjacent cells are horizontally or vertically neighboring. 
+The same letter cell may not be used more than once.
+
+ 
+
+Example 1:
+
+
+Input: board = [["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], word = "ABCCED"
+Output: true
+Example 2:
+
+
+Input: board = [["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], word = "SEE"
+Output: true
+Example 3:
+
+
+Input: board = [["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], word = "ABCB"
+Output: false
+
+
+Solution-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+class Solution {
+    boolean[][] visited;
+    public boolean exist(char[][] board, String word) {
+        
+        //making a visited boolean matrix to not to revisit same path
+        visited = new boolean[board.length][board[0].length];
+        
+        //checking if the first element is available or not if yes then make a call
+        for(int i=0;i<board.length;i++){
+            for(int j=0;j<board[0].length;j++){
+                //if the first element found 
+                if(board[i][j] == word.charAt(0)){
+                    //go for the rest remaining ones
+                    if(helper(board,word,0,i,j)) return true;
+                }
+                
+            }
+        }
+        return false;
+    }
+    
+    public boolean helper(char[][] board,String word,int idx, int i, int j){
+        //return true if i reach to the last of the string
+        if(idx == word.length()) return true;
+        
+        
+        //check for the failed conditions
+        if(i<0 || i>board.length-1 || j<0 || j>board[0].length-1 || visited[i][j] || word.charAt(idx)!=board[i][j]) return false;
+        
+        //mark visited true;
+        
+        visited[i][j] = true;
+        
+        //check for all the path;
+        
+        boolean path1 = helper(board,word,idx+1,i+1,j);
+        boolean path2 = helper(board,word,idx+1,i,j+1);
+        boolean path3 = helper(board,word,idx+1,i-1,j);
+        boolean path4 = helper(board,word,idx+1,i,j-1);
+        
+        if(path1 || path2 || path3 || path4) return true;
+        
+        //mark visited false for backtracking
+        
+        visited[i][j] = false;
+        
+        //return if nothing makes a thing
+        
+        return false;
+    }
+}
